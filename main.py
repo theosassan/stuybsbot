@@ -57,6 +57,7 @@ def select_brawlers(number):
     choice = random.choice(brawlers)
     in_play.append(choice)
     brawlers.remove(choice)
+    
 proxies = {
 "http": os.environ['QUOTAGUARDSTATIC_URL'],
 "https": os.environ['QUOTAGUARDSTATIC_URL']
@@ -68,7 +69,7 @@ print(res.text)
 
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
-  client.run(res)
+  
  
   #setwordle.start()
   #endlottery.start()
@@ -1994,7 +1995,7 @@ async def on_message(message):
     embed.set_image(url = 'https://cdn.discordapp.com/attachments/947292794345652225/961836366243704872/60b65fc8668685c9237a3c67_brawlstars3.jpeg')
     await message.channel.send(embed = embed)
 
-
+client.run(res)
 client.run(os.environ["DISCORD_TOKEN"])
 #my_secret = os.environ['.env']
 
