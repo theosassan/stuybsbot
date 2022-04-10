@@ -1,6 +1,0 @@
-
-[qgtunnel.0]
-accept = "127.0.0.1:433"
-connect = "stuybsbot.com:433"
-encrypted = false
-transparent = false
