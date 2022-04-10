@@ -1,4 +1,2 @@
 # stuybsbot
-# stuybsbot
-# stuybsbot
 # theosassan
