@@ -319,7 +319,7 @@ async def on_message(message):
     return
   msg = message.content
   user = message.author
-  #token = os.environ['.token']
+  token = os.environ['.token']
   token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjIxY2VlNDllLTdhZDctNDM2MC1iODgzLWM3NjRiZjMwOWVhYSIsImlhdCI6MTY0OTYyMTk4Nywic3ViIjoiZGV2ZWxvcGVyLzM3ZmRhMDU0LWUzNzctZmQ2OC02MTdmLTllYTI1ODI1OTUyMCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMy4yMjcuMTgyLjE5MyIsIjU0LjE2MS45Ni4xMDkiXSwidHlwZSI6ImNsaWVudCJ9XX0.McqIplsiJpBfReXfpPJRBYs5oKBPKRm-JyexaRR22hh9WD3ZUKMfq46k_lBSjb4056-NqruCMMcBqrhhSHwOQQ"
   #bot = Client(token)
   if msg == "$doonce":
