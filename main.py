@@ -69,7 +69,12 @@ async def on_ready():
 
 #START OF API
 class Client:
-    
+    proxies = {
+"http": os.environ['QUOTAGUARDSTATIC_URL'],
+"https": os.environ['QUOTAGUARDSTATIC_URL']
+}
+    res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
+    print(res.text)
     REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
 
     def __init__(self, token, session=None, timeout=30, is_async=False, **options):
@@ -1988,12 +1993,7 @@ async def on_message(message):
     embed.set_image(url = 'https://cdn.discordapp.com/attachments/947292794345652225/961836366243704872/60b65fc8668685c9237a3c67_brawlstars3.jpeg')
     await message.channel.send(embed = embed)
 
-proxies = {
-"http": os.environ['QUOTAGUARDSTATIC_URL'],
-"https": os.environ['QUOTAGUARDSTATIC_URL']
-}
-res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
-print(res.text)
+
 client.run(os.environ["DISCORD_TOKEN"])
 #my_secret = os.environ['.env']
 
