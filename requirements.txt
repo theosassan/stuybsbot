@@ -16,9 +16,11 @@ cryptography==3.4.8
 cs50==7.0.2
 cycler==0.10.0
 debugpy==1.2.1
+discord.py @ 
 distlib==0.3.2
 docopt==0.6.2
 filelock==3.0.12
+Flask @ 
 funcsigs==1.0.2
 future==0.18.2
 gast==0.3.3
@@ -30,6 +32,7 @@ greenlet==1.1.1
 grpcio==1.40.0
 h5py==2.10.0
 html5lib==1.1
+idna @ 
 importlib-metadata==3.10.1
 itsdangerous==2.0.1
 jedi==0.15.2
@@ -101,4 +104,5 @@ wordlist @ file:///home/runner/.cache/pypoetry/artifacts/94/74/cc/8f4d2df5a41ac1
 wrapt==1.12.1
 yapf==0.31.0
 yarg==0.1.9
+manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
 zipp==3.4.1
