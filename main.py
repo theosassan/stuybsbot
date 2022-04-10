@@ -24,7 +24,7 @@ import logging
 import sys
 import time
 from typing import Union
-import urllib2, os
+import urllib2
 import aiohttp
 import requests
 from cachetools import TTLCache
