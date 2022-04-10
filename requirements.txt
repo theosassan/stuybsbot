@@ -16,11 +16,9 @@ cryptography==3.4.8
 cs50==7.0.2
 cycler==0.10.0
 debugpy==1.2.1
-discord.py @ 
 distlib==0.3.2
 docopt==0.6.2
 filelock==3.0.12
-Flask @ 
 funcsigs==1.0.2
 future==0.18.2
 gast==0.3.3
@@ -32,7 +30,6 @@ greenlet==1.1.1
 grpcio==1.40.0
 h5py==2.10.0
 html5lib==1.1
-idna @ 
 importlib-metadata==3.10.1
 itsdangerous==2.0.1
 jedi==0.15.2
@@ -99,10 +96,10 @@ tqdm==4.62.2
 ujson==1.35
 virtualenv==20.7.2
 webencodings==0.5.1
-Werkzeug @ file:///home/runner/.cache/pypoetry/artifacts/15/3a/86/89704bd3f51d9796b98faa9cca15516723bdc7c61a85ecd9037cbd224a/Werkzeug-2.0.2-py3-none-any.whl
-wordlist @ file:///home/runner/.cache/pypoetry/artifacts/94/74/cc/8f4d2df5a41ac1b87952922de410d7ee972a69f99649cf03eca4ba9f07/wordlist-1.0.1.tar.gz
 wrapt==1.12.1
 yapf==0.31.0
 yarg==0.1.9
 manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
 zipp==3.4.1
+discord
+wordlist
