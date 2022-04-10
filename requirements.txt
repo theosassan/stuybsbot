@@ -99,7 +99,6 @@ webencodings==0.5.1
 wrapt==1.12.1
 yapf==0.31.0
 yarg==0.1.9
-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl
 zipp==3.4.1
 discord
 wordlist
