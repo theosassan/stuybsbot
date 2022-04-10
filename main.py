@@ -39,7 +39,7 @@ proxyDict = {
               "http"  : os.environ.get('FIXIE_URL', ''),
               "https" : os.environ.get('FIXIE_URL', '')
             }
-r = requests.get('http://www.example.com', proxies=proxyDict)
+r = requests.get('http://fixie:3D90bM6sMUBVlsY@velodrome.usefixie.com:80', proxies=proxyDict)
 
 in_play = []
 banned = []
