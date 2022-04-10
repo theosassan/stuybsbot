@@ -22,3 +22,6 @@ wrapt==1.11.2
 discord
 requests-oauthlib==1.3.0
 requests-toolbelt==0.9.1
+wordlist
+brawlers
+trivia
