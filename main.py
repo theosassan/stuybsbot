@@ -1987,8 +1987,8 @@ async def on_message(message):
     await message.channel.send(embed = embed)
 
   
-my_secret = os.environ['.env']
-
+#my_secret = os.environ['.env']
+my_secret = 'OTE2ODg3NTk2OTE3OTg1MzIw.YawsHg.meO9WCXFhlyDftwoo4awTIi-oqk'
 
 #keep_alive()
 client.run(my_secret)
