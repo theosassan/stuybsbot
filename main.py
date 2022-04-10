@@ -41,6 +41,12 @@ banned = []
 queue = {0:'',1:'',2:'',3:'', 4:'', 5:''}
 lb = {1: '', 2:'', 3:'', 4:'', 5:''}
 
+proxies = {
+"http": os.environ['QUOTAGUARDSTATIC_URL'],
+"https": os.environ['QUOTAGUARDSTATIC_URL']
+}
+
+res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
 
 def ban_brawler(brawler):
   brawlers.remove(brawler)
