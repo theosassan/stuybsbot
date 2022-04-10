@@ -57,8 +57,6 @@ def select_brawlers(number):
     choice = random.choice(brawlers)
     in_play.append(choice)
     brawlers.remove(choice)
-    
-@client.event
 proxies = {
 "http": os.environ['QUOTAGUARDSTATIC_URL'],
 "https": os.environ['QUOTAGUARDSTATIC_URL']
@@ -66,6 +64,8 @@ proxies = {
 
 res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
 print(res.text)
+@client.event
+
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
   client.run(res)
