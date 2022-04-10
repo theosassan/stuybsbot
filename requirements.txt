@@ -19,7 +19,4 @@ typed-ast==1.4.1
 Werkzeug==1.0.1
 wincertstore==0.2
 wrapt==1.11.2
-discord @
-file:///home/runner/.cache/pypoetry/artifacts/2a/dc/46/ea51f1b99fab3043473352404824cf8774020f4ef65ef7e8985e928ce3/discord-1.7.3-py3-none-any.whl
-discord.py @
-file:///home/runner/.cache/pypoetry/artifacts/93/3d/7e/a71579025e378cc8608f84db0999aa01171575fc9bd9078988d8520a75/discord.py-1.7.3-py3-none-any.whl
+discord
