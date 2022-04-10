@@ -104,7 +104,3 @@ discord
 wordlist
 brawlstats
 asyncio
-logging
-sys
-time
-aiohttp
