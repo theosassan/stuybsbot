@@ -69,13 +69,6 @@ async def on_ready():
 
 #START OF API
 class Client:
-    proxies = {
-"http": os.environ['QUOTAGUARDSTATIC_URL'],
-"https": os.environ['QUOTAGUARDSTATIC_URL']
-}
-    res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
-    print(res.text)
-    REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
 
     def __init__(self, token, session=None, timeout=30, is_async=False, **options):
         # Async options
