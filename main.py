@@ -311,7 +311,7 @@ async def on_message(message):
     return
   msg = message.content
   user = message.author
-  token = os.environ['.token']
+  #token = os.environ['.token']
   token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjBkMDhhOWI2LTg1N2YtNGQyNS04ZWFlLTVhODAzZDg3NDM5YiIsImlhdCI6MTY0OTYxNjA3OCwic3ViIjoiZGV2ZWxvcGVyLzM3ZmRhMDU0LWUzNzctZmQ2OC02MTdmLTllYTI1ODI1OTUyMCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMzQuMTM5Ljc0LjkiXSwidHlwZSI6ImNsaWVudCJ9XX0.IiPYN04vWory3BX8jRa5pI7FsR7NsUAFXHEyOj2JG3pK2i-lMTXrurx4e4NMWtkqygnCyGv2T7ePhUPy1Y6YRw"
   bot = Client(token)
   if msg == "$doonce":
