@@ -35,6 +35,11 @@ log = logging.getLogger(__name__)
 #
 client = discord.Client()
 
+proxyDict = {
+              "http"  : os.environ.get('FIXIE_URL', ''),
+              "https" : os.environ.get('FIXIE_URL', '')
+            }
+r = requests.get('http://www.example.com', proxies=proxyDict)
 
 in_play = []
 banned = []
