@@ -64,7 +64,7 @@ async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
   #setwordle.start()
   #endlottery.start()
-
+client.run(os.environ["DISCORD_TOKEN"])
 
 #START OF API
 class Client:
@@ -1990,5 +1990,4 @@ async def on_message(message):
 #my_secret = os.environ['.env']
 
 #keep_alive()
-if __name__ == '__main__':
-  client.run(os.environ["DISCORD_TOKEN"])
+
