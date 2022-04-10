@@ -102,3 +102,10 @@ yarg==0.1.9
 zipp==3.4.1
 discord
 wordlist
+brawlstats
+asyncio
+json
+logging
+sys
+time
+aiohttp
