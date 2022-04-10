@@ -24,7 +24,7 @@ import logging
 import sys
 import time
 from typing import Union
-
+import urllib2, os
 import aiohttp
 import requests
 from cachetools import TTLCache
@@ -34,14 +34,20 @@ from brawlstats.models import BattleLog, Brawlers, Club, Constants, Members, Pla
 from brawlstats.utils import API, bstag, typecasted
 log = logging.getLogger(__name__)
 #
-
-
 client = discord.Client()
+os.environ['http_proxy'] = os.environ['QUOTAGUARDSTATIC_URL']
+os.environ['http_proxy'] = os.environ['QUOTAGUARDSTATIC_URL']
+url = 'http://ip.quotaguard.com/'
+proxy = urllib2.ProxyHandler()
+opener = urllib2.build_opener(proxy)
+in_ = opener.open(url)
+res = in_.read()
+
 in_play = []
 banned = []
 queue = {0:'',1:'',2:'',3:'', 4:'', 5:''}
 lb = {1: '', 2:'', 3:'', 4:'', 5:''}
-
+ 
 
 def ban_brawler(brawler):
   brawlers.remove(brawler)
@@ -63,12 +69,7 @@ def select_brawlers(number):
 
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
-  proxies = {
-"http": os.environ['QUOTAGUARDSTATIC_URL'],
-"https": os.environ['QUOTAGUARDSTATIC_URL']
-}
-  res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
-  print(res.text)
+ 
   #setwordle.start()
   #endlottery.start()
 
