@@ -1990,4 +1990,4 @@ async def on_message(message):
 #my_secret = os.environ['.env']
 
 #keep_alive()
-client.run(DISCORD_TOKEN)
+client.run(os.environ["DISCORD_TOKEN"])
