@@ -1991,4 +1991,4 @@ async def on_message(message):
 #my_secret = 'OTE2ODg3NTk2OTE3OTg1MzIw.YawsHg.meO9WCXFhlyDftwoo4awTIi-oqk'
 
 #keep_alive()
-client.run(BOT_TOKEN)
+client.run(DISCORD_TOKEN)
