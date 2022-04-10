@@ -33,13 +33,8 @@ from brawlstats.models import BattleLog, Brawlers, Club, Constants, Members, Pla
 from brawlstats.utils import API, bstag, typecasted
 log = logging.getLogger(__name__)
 #
-client = discord.Client()
 
-proxyDict = {
-              "http"  : os.environ.get('FIXIE_URL', ''),
-              "https" : os.environ.get('FIXIE_URL', '')
-            }
-r = requests.get('http://fixie:3D90bM6sMUBVlsY@velodrome.usefixie.com:80', proxies=proxyDict)
+client = discord.Client()
 
 in_play = []
 banned = []
@@ -64,12 +59,20 @@ def select_brawlers(number):
     brawlers.remove(choice)
     
 @client.event
+proxies = {
+"http": os.environ['QUOTAGUARDSTATIC_URL'],
+"https": os.environ['QUOTAGUARDSTATIC_URL']
+}
 
+res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
+print(res.text)
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
+  client.run(res)
  
   #setwordle.start()
   #endlottery.start()
+
 
 
 #START OF API
