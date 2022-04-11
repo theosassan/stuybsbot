@@ -2075,8 +2075,8 @@ async def on_message(message):
     await message.channel.send(embed = embed)
 
   
-my_secret = os.environ['.env']
+#my_secret = os.environ['.env']
+client.run(os.environ("DISCORD_TOKEN"])
 
-
-keep_alive()
-client.run(my_secret)
+#keep_alive()
+#client.run(my_secret)
