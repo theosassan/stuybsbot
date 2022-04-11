@@ -2085,7 +2085,7 @@ proxies = {
 "https": os.environ['QUOTAGUARDSTATIC_URL']
 }
 
-res = requests.get("http:/us-east-static-08.quotaguard.com/", proxies=proxies)
+res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
 
 client.run(os.environ["DISCORD_TOKEN"])
 
