@@ -318,11 +318,7 @@ async def on_message(message):
     bot = Client(token)
   except Exception as e:
     print(e)
-  
-  if msg == "$doonce":
-    while True:
-      await message.channel.send(".")
-      await asyncio.sleep(800)
+ 
   with open("save.json", 'r') as f:
       users = json.load(f)
   if msg.startswith('$bregister '):
@@ -2080,14 +2076,14 @@ import os
 import requests
 import os
 
+
+
+client.run(os.environ["DISCORD_TOKEN"])
 proxies = {
 "http": os.environ['QUOTAGUARDSTATIC_URL'],
 "https": os.environ['QUOTAGUARDSTATIC_URL']
 }
 
 res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
-
-client.run(os.environ["DISCORD_TOKEN"])
-
 #keep_alive()
 #client.run(my_secret)
