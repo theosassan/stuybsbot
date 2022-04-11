@@ -2078,7 +2078,7 @@ proxies = {
     }
 res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
     #res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
-    REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
+REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
 
 client.run(os.environ["DISCORD_TOKEN"])
 
