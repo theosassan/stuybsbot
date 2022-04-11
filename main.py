@@ -16,7 +16,7 @@ from wordlist import wordlist
 from brawlers import full_brawlers, brawlers, brawlersLow
 from trivia import questions, options
 import brawlstats
-
+import socket
 #
 import asyncio
 import json
@@ -24,6 +24,7 @@ import logging
 import sys
 import time
 from typing import Union
+
 import aiohttp
 import requests
 from cachetools import TTLCache
@@ -35,12 +36,11 @@ log = logging.getLogger(__name__)
 #
 
 client = discord.Client()
-
 in_play = []
 banned = []
 queue = {0:'',1:'',2:'',3:'', 4:'', 5:''}
 lb = {1: '', 2:'', 3:'', 4:'', 5:''}
- 
+
 
 def ban_brawler(brawler):
   brawlers.remove(brawler)
@@ -58,26 +58,18 @@ def select_brawlers(number):
     in_play.append(choice)
     brawlers.remove(choice)
     
-proxies = {
-"http": os.environ['QUOTAGUARDSTATIC_URL'],
-"https": os.environ['QUOTAGUARDSTATIC_URL']
-}
-
-res = requests.get("http://ip.quotaguard.com/", proxies=proxies)
-print(res.text)
 @client.event
 
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
-  
- 
   #setwordle.start()
   #endlottery.start()
 
 
-
 #START OF API
 class Client:
+    
+    REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
 
     def __init__(self, token, session=None, timeout=30, is_async=False, **options):
         # Async options
@@ -320,16 +312,19 @@ async def on_message(message):
   msg = message.content
   user = message.author
   token = os.environ['.token']
-  token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjIxY2VlNDllLTdhZDctNDM2MC1iODgzLWM3NjRiZjMwOWVhYSIsImlhdCI6MTY0OTYyMTk4Nywic3ViIjoiZGV2ZWxvcGVyLzM3ZmRhMDU0LWUzNzctZmQ2OC02MTdmLTllYTI1ODI1OTUyMCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMy4yMjcuMTgyLjE5MyIsIjU0LjE2MS45Ni4xMDkiXSwidHlwZSI6ImNsaWVudCJ9XX0.McqIplsiJpBfReXfpPJRBYs5oKBPKRm-JyexaRR22hh9WD3ZUKMfq46k_lBSjb4056-NqruCMMcBqrhhSHwOQQ"
-  #bot = Client(token)
+  try:
+    bot = Client(token)
+  except Exception as e:
+    print(e)
+  
   if msg == "$doonce":
     while True:
       await message.channel.send(".")
       await asyncio.sleep(800)
   with open("save.json", 'r') as f:
       users = json.load(f)
-  if msg.startswith('$register '):
-    id = msg.split('$register ',1)[1]
+  if msg.startswith('$bregister '):
+    id = msg.split('$bregister ',1)[1]
     with open('save.json', 'w') as f:
       json.dump(users, f)
     try:
@@ -337,12 +332,12 @@ async def on_message(message):
       users[str(user.id)]['id'] = id
     except:
       await message.channel.send("Invalid ID. Please use the command again.")
-  if msg.startswith('$profile'):
+  if msg.startswith('$bprofile'):
     profile = bot.get_player(tag = brawlstats.utils.bstag(users[str(user.id)]['id']), use_cache=True)
     embed = discord.Embed(title = f"{profile.name}'s Profile:", description = f"**Trophies:** {profile.trophies}\n**Highest Trophies: **{profile.highest_trophies}\n**EXP: **{profile.exp_level}\n**Brawlers: **{len(profile.brawlers)}/55\n**3v3 Wins: ** {profile.x3vs3_victories}\n**Solo Wins:** {profile.solo_victories}\n**Duo Wins: **{profile.duo_victories}\n**Club: **{profile.club.name}")
     embed.set_thumbnail(url = user.avatar_url)
     await message.channel.send(embed=embed)
-  if msg.startswith('$brawlers'):
+  if msg.startswith('$bbrawlers'):
     profile = bot.get_player(tag = brawlstats.utils.bstag(users[str(user.id)]['id']), use_cache=True)
     brawlers = profile.brawlers
     brawlers2 = []
@@ -397,15 +392,9 @@ async def on_message(message):
     await message.channel.send(embed = embed)
     
   #END OF API
-  trophyRoad = ["Nita", "Colt", "Bull", "Jessie", "Brock", "Dynamike", "Bo", "Tick", "8-Bit", "Emz", "Stu"]
-  rare = ["El Primo", "Barley", "Poco", "Rosa"]
-  superRare = ["Rico", "Darryl", "Penny", "Carl", "Jacky"]
-  epic = ["Piper", "Pam", "Frank", "Bibi", "Bea", "Nani","Edgar","Griff","Grom"]
-  mythic = ["Mortis","Tara","Gene","Max","Mr. P","Sprout","Byron","Squeak"]
-  legendary = ["Spike","Crow","Leon","Sandy","Amber","Meg"]
-  chromatic = ["Gale","Surge","Colette","Lou","Colonel Ruffs","Belle","Buzz","Ash","Lols","Fang","Eve"]
   
-  if msg.startswith('$sregister'):
+  
+  if msg.startswith('$register'):
     user = message.author
     with open("brawl.json", 'r') as f:
       brawl = json.load(f)
@@ -419,8 +408,7 @@ async def on_message(message):
     with open("brawl.json", 'w') as f:
       brawl = json.dump(brawl, f)
 
-  if msg.startswith('$sprofile'):
-    profile = bot.get_player(tag = brawlstats.utils.bstag(users[str(user.id)]['id']), use_cache=True)
+  if msg.startswith('$profile'):
     user = message.author
     with open("brawl.json", 'r') as f:
       brawl = json.load(f)
@@ -438,8 +426,8 @@ async def on_message(message):
     with open("brawl.json", 'w') as f:
       brawl = json.dump(brawl, f)  
 
-  if msg.startswith("$sshop"):
-    embed = discord.Embed(title = "StuyBS Simulator Shop", description = "**Gems** - To purchase, type **buygems [gems]**.\n***30 Gems*** - *100 SB*\n***80 Gems*** - *250 SB*\n***170 Gems*** - *500 SB*\n***360 Gems*** - *1000 SB*\n***950 Gems*** - *2500 SB*\n ***2000 Gems*** - *5000 SB*")
+  if msg.startswith("$gemshop"):
+    embed = discord.Embed(title = "StuyBS Gem Shop", description = "**Gems** - To purchase, type **buygems [gems]**.\n***30 Gems*** - *100 SB*\n***80 Gems*** - *250 SB*\n***170 Gems*** - *500 SB*\n***360 Gems*** - *1000 SB*\n***950 Gems*** - *2500 SB*\n ***2000 Gems*** - *5000 SB*")
     embed.set_image(url = "https://cdn.discordapp.com/attachments/947292794345652225/962387398589829150/IMG_3213.jpg")
     await message.channel.send(embed = embed)
 
@@ -505,18 +493,54 @@ async def on_message(message):
       brawl[user]['brawlers'] = {"Shelly" : 1, "Nita" : 1, "Colt" : 1, "Bull" : 1, "Jessie" : 1, "Brock" : 1, "Dynamike" : 1, "Bo" : 1, "Tick" : 1, "8-Bit" :1, "Emz" : 1, "Stu" : 1}
     with open("brawl.json", 'w') as f:
       brawl = json.dump(brawl, f)  
+  trophyRoad1 = ["Nita", "Colt", "Bull", "Jessie", "Brock", "Dynamike", "Bo", "Tick", "8-Bit", "Emz", "Stu"]
+  rare1 = ["El Primo", "Barley", "Poco", "Rosa"]
+  superRare1 = ["Rico", "Darryl", "Penny", "Carl", "Jacky"]
+  epic1 = ["Piper", "Pam", "Frank", "Bibi", "Bea", "Nani","Edgar","Griff","Grom"]
+  mythic1 = ["Mortis","Tara","Gene","Max","Mr. P","Sprout","Byron","Squeak"]
+  legendary1 = ["Spike","Crow","Leon","Sandy","Amber","Meg"]
+  chromatic1 = ["Gale","Surge","Colette","Lou","Colonel Ruffs","Belle","Buzz","Ash","Lols","Fang","Eve"]
   if msg.startswith("$buy bb"):
     with open("brawl.json", 'r') as f:
       brawl = json.load(f)
     user = message.author
     brawlers = brawl[str(user.id)]['brawlers']
+    trophyRoad = []
+    rare = []
+    superRare = []
+    epic = []
+    mythic = []
+    legendary = []
+    chromatic = []
+    for brawler in trophyRoad1:
+      if brawler not in brawlers:
+        trophyRoad.append(brawler)
+    for brawler in rare1:
+      if brawler not in brawlers:
+        rare.append(brawler)
+    for brawler in superRare1:
+      if brawler not in brawlers:
+        superRare.append(brawler)
+    for brawler in epic1:
+      if brawler not in brawlers:
+        epic.append(brawler)
+    for brawler in mythic1:
+      if brawler not in brawlers:
+        mythic.append(brawler)
+    for brawler in legendary1:
+      if brawler not in brawlers:
+        legendary.append(brawler)
+    for brawler in chromatic1:
+      if brawler not in brawlers:
+        chromatic.append(brawler)
+        
     coins = brawl[str(user.id)]['coins']
     gems = brawl[str(user.id)]['gems']
     pp = brawl[str(user.id)]['pp']
     newline = "\n"
     if brawl[str(user.id)]['gems'] >= 30:
       brawl[str(user.id)]['gems'] -= 30
-      bgot = " "
+      bgot = ""
       coinsgot = 0
       gemsgot = 0
       ppgot = 0
@@ -526,38 +550,46 @@ async def on_message(message):
         gemsgot += random.randint(0, 2)
         ppgot += random.randint(5, 20)
       rand = random.randint(0, 1000)
-      if rand in [0]:
-        bgot = legendary[random.randint(0, len(legendary) - 1)]
-      elif rand in range(0, 5):
-        bgot = mythic[random.randint(0, len(mythic) - 1)]
-      elif rand in range(0, 20):
-        bgot = epic[random.randint(0, len(epic) - 1)]
-      elif rand in range(0, 40):
-        bgot = superRare[random.randint(0, len(superRare) - 1)]
-      elif rand in range(0, 80):
-        bgot = rare[random.randint(0, len(rare) - 1)]
+      try:
+        if rand in [0]:
+          bgot = legendary[random.randint(0, len(legendary) - 1)]
+        elif rand in range(0, 5):
+          bgot = mythic[random.randint(0, len(mythic) - 1)]
+        elif rand in range(0, 20):
+          bgot = epic[random.randint(0, len(epic) - 1)]
+        elif rand in range(0, 40):
+          bgot = superRare[random.randint(0, len(superRare) - 1)]
+        elif rand in range(0, 80):
+          bgot = rare[random.randint(0, len(rare) - 1)]
+        else:
+          pass
+      except:
+        pass
+      if bgot != "":
+        brawl[str(user.id)]['brawlers'][bgot] = 1
       else:
         pass
-      if bgot != " ":
-        (brawl[str(user.id)]['brawlers'])[bgot] = 1
       brawl[str(user.id)]['coins'] += coinsgot
       brawl[str(user.id)]['gems'] += gemsgot
       brawl[str(user.id)]['pp'] += ppgot
-      
-      await message.channel.send("Purchasing Big Box...")
-      await asyncio.sleep(1)
+      with open("brawl.json", 'w') as f:
+        brawl = json.dump(brawl, f) 
+      #await message.channel.send("Purchasing Big Box...")
+      #await asyncio.sleep(1)
       embed = discord.Embed(title = "You got...", description = f"**{coinsgot}** Coins\n**{gemsgot}** Gems\n**{ppgot}** Power Points")
       embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/947292794345652225/962389536078450698/IMG_3215.png")
       embed.set_footer(text = "-30 gems")
       await message.channel.send(embed = embed)
-      if bgot!= " ":
-        embed = discord.embed(title = "and...")
-        embed.set_image(url = "https://tenor.com/view/brawl-box-gif-21656776")
+      if bgot!= "":
+        embed = discord.Embed(title = "and...")
+        embed.set_image(url = "https://cdn.discordapp.com/attachments/906615498664452139/962946010714366002/IMG_3223.gif")
+        await message.channel.send(embed = embed)
+        await asyncio.sleep(2)
         await message.channel.send(f"**{bgot.upper()}**!!")
+    
     else:
       await message.channel.send(f"You need **{30 - gems}** more gems to purchase this item!")
-    with open("brawl.json", 'w') as f:
-      brawl = json.dump(brawl, f)  
+    
       
   if msg.startswith("$buy mb"):
     
@@ -569,9 +601,37 @@ async def on_message(message):
     gems = brawl[str(user.id)]['gems']
     pp = brawl[str(user.id)]['pp']
     newline = "\n"
+    trophyRoad = []
+    rare = []
+    superRare = []
+    epic = []
+    mythic = []
+    legendary = []
+    chromatic = []
+    for brawler in trophyRoad1:
+      if brawler not in brawlers:
+        trophyRoad.append(brawler)
+    for brawler in rare1:
+      if brawler not in brawlers:
+        rare.append(brawler)
+    for brawler in superRare1:
+      if brawler not in brawlers:
+        superRare.append(brawler)
+    for brawler in epic1:
+      if brawler not in brawlers:
+        epic.append(brawler)
+    for brawler in mythic1:
+      if brawler not in brawlers:
+        mythic.append(brawler)
+    for brawler in legendary1:
+      if brawler not in brawlers:
+        legendary.append(brawler)
+    for brawler in chromatic1:
+      if brawler not in brawlers:
+        chromatic.append(brawler)
     if brawl[str(user.id)]['gems'] >= 80:
       brawl[str(user.id)]['gems'] -= 80
-      bgot = " "
+      bgot = ""
       coinsgot = 0
       gemsgot = 0
       ppgot = 0
@@ -581,52 +641,67 @@ async def on_message(message):
         gemsgot += random.randint(0, 2)
         ppgot += random.randint(5, 20)
       rand = random.randint(0, 350)
-      if rand in [0]:
-        bgot = legendary[random.randint(0, len(legendary) - 1)]
-      elif rand in range(0, 5):
-        bgot = mythic[random.randint(0, len(mythic) - 1)]
-      elif rand in range(0, 20):
-        bgot = epic[random.randint(0, len(epic) - 1)]
-      elif rand in range(0, 40):
-        bgot = superRare[random.randint(0, len(superRare) - 1)]
-      elif rand in range(0, 80):
-        bgot = rare[random.randint(0, len(rare) - 1)]
+      try:
+        if rand in [0]:
+          bgot = legendary[random.randint(0, len(legendary) - 1)]
+        elif rand in range(0, 5):
+          bgot = mythic[random.randint(0, len(mythic) - 1)]
+        elif rand in range(0, 20):
+          bgot = epic[random.randint(0, len(epic) - 1)]
+        elif rand in range(0, 40):
+          bgot = superRare[random.randint(0, len(superRare) - 1)]
+        elif rand in range(0, 80):
+          bgot = rare[random.randint(0, len(rare) - 1)]
+        else:
+          pass
+      except:
+        pass
+      if bgot != "":
+        brawl[str(user.id)]['brawlers'][bgot] = 1
       else:
         pass
-      if bgot != " ":
-        (brawl[str(user.id)]['brawlers'])[bgot] = 1
       brawl[str(user.id)]['coins'] += coinsgot
       brawl[str(user.id)]['gems'] += gemsgot
       brawl[str(user.id)]['pp'] += ppgot
-      
-      await message.channel.send("Purchasing Mega Box...")
-      await asyncio.sleep(1)
-      embed = discord.Embed(title = "You got...", description = f"**{coinsgot}** Coins\n**{gemsgot}** Gems\n**{ppgot}** Power Points\n**{bgot.upper()}**")
+      with open("brawl.json", 'w') as f:
+        json.dump(brawl, f) 
+      #await message.channel.send("Purchasing Mega Box...")
+      #await asyncio.sleep(1)
+      embed = discord.Embed(title = "You got...", description = f"**{coinsgot}** Coins\n**{gemsgot}** Gems\n**{ppgot}** Power Points\n")
       embed.set_thumbnail(url = "https://cdn.discordapp.com/attachments/947292794345652225/962389532282601532/IMG_3216.png")
       embed.set_footer(text = "-80 gems")
       await message.channel.send(embed = embed)
+      if bgot!= "":
+        embed = discord.Embed(title = "and...")
+        embed.set_image(url = "https://cdn.discordapp.com/attachments/906615498664452139/962946010714366002/IMG_3223.gif")
+        await message.channel.send(embed = embed)
+        await asyncio.sleep(2)
+        await message.channel.send(f"**{bgot.upper()}**!!")
+      
     else:
       await message.channel.send(f"You need **{80 - gems}** more gems to purchase this item!")
-    with open("brawl.json", 'w') as f:
-      brawl = json.dump(brawl, f)  
+    
 
-  if msg.startswith('$sbrawlers'):
+  if msg.startswith('$brawlers'):
     with open("brawl.json", 'r') as f:
       brawl = json.load(f)
     user = message.author
     brawlers = []
     brawlersD = []
     newline = "\n"
-    for brawler in brawl[str(user.id)]['brawlers']:
+    brawlers2 = brawl[str(user.id)]['brawlers']
+    brawlers2 = dict(sorted(brawlers2.items(), key = lambda item: item[1], reverse = True))
+    for brawler in brawlers2:
       brawlers.append(brawler)
     for brawler in brawlers:
-      brawlersD.append(f"**{brawler}** - Power {brawl[str(user.id)]['brawlers'][brawler]}")
+      brawlersD.append(f"**{brawler}** - Power **{brawl[str(user.id)]['brawlers'][brawler]}**")
+      
     embed = discord.Embed(title = f"{user.name}'s StuyBS Simulator Brawlers:", description = f"{newline.join(brawlersD)}")
     embed.set_thumbnail(url = user.avatar_url)
     await message.channel.send(embed=embed)
     
-  if msg.startswith('$supgrade '):
-    brawler = (msg.split('$supgrade ',1)[1]).title()
+  if msg.startswith('$upgrade '):
+    brawler = (msg.split('$upgrade ',1)[1]).title()
     with open("brawl.json", 'r') as f:
       brawl = json.load(f)
     user = message.author
@@ -743,7 +818,7 @@ async def on_message(message):
     await message.channel.send(f"Hmm... you shall play... **{choice}!**")
   if msg.lower().startswith('$help'):
     
-    emh = discord.Embed(color = Color.light_grey(), title = "Help is on the way!", description = "**StuyBS Simluator **\n\n***$sregister:*** Registers your StuyBS Simulator profile.\n\n***$sprofile:*** Displays a summary of your StuyBS profile.\n\n***$sbrawlers:*** Displays a list of your StuyBS Brawlers and their stats.\n\n***$sshop:*** Displays the StuyBS Simulator shop.\n\n***$supgrade [brawler]:*** Upgrades a specificed Brawler.\n\n**Brawl Stars**\n\n***$register [id]:*** Registers your in-game profile.\n\n***$profile:*** Displays a summary of your in-game profile.\n\n***$brawlers:*** Displays a list of your in-game Brawlers and their stats.\n\n***$tlb:*** Displays the server's Trophy Leaderboard.\n\n***$stuyclub:*** Displays the Stuyvesant in-game club. \n\n**StuyBucks**\n\n***$wordle:*** Starts a game of Wordle.\n\n***$trivia:*** Starts a game of brawl stars trivia. \n\n***$hm:*** Starts a game of hangman. \n\n***$hunt:*** Hunt for a randomized brawler to gain or lose points.\n\n***$gtn***: Starts a game of guess the number.\n\n***$sb:*** Displays your StuyBucks count. \n\n***$lb:*** Displays the StuyBucks leaderboard.\n\n***$shop:*** Opens the StuyBucks shop.\n\n***$buy [item]:*** Purchase an item from the shop.\n\n***$bid [amt]:*** Bids a specified amount for the ongoing auction.\n\n***$donate [amt] to [user]:*** Donates a specified amount to a specified user.\n\n**Other**\n\n***$select:*** Randomizes a specified subset of brawlers - *excludes banned brawlers.*\n\n***$ban [brawler]:*** Bans a specified brawler.\n\n***$unban [brawler]:*** Unbans a specified brawler.\n\n***$resetbans:*** Unbans all currently banned brawlers.\n\n***$bans:*** Lists the currently banned brawlers.\n\n***$randommap [mode]:*** Randomizes a map from the specified game mode - *Inputs include 'any' for any mode and 'pl' for power league maps.*\n\n***$choose:*** Randomly selects a brawler for the user to play.")
+    emh = discord.Embed(color = Color.light_grey(), title = "Help is on the way!", description = "**StuyBS Simluator **\n\n***$register:*** Registers your StuyBS Simulator profile.\n\n***$profile:*** Displays a summary of your StuyBS profile.\n\n***$brawlers:*** Displays a list of your StuyBS Brawlers and their stats.\n\n***$gemshop:*** Displays the StuyBS Simulator gem shop.\n\n***$upgrade [brawler]:*** Upgrades a specificed Brawler.\n\n**Brawl Stars (Currently Disabled)**\n\n***$bregister [id]:*** Registers your in-game profile.\n\n***$bprofile:*** Displays a summary of your in-game profile.\n\n***$bbrawlers:*** Displays a list of your in-game Brawlers and their stats.\n\n***$tlb:*** Displays the server's Trophy Leaderboard.\n\n***$stuyclub:*** Displays the Stuyvesant in-game club. \n\n**StuyBucks**\n\n***$wordle:*** Starts a game of Wordle.\n\n***$trivia:*** Starts a game of brawl stars trivia. \n\n***$hm:*** Starts a game of hangman. \n\n***$hunt:*** Hunt for a randomized brawler to gain or lose points.\n\n***$gtn***: Starts a game of guess the number.\n\n***$sb:*** Displays your StuyBucks count. \n\n***$lb:*** Displays the StuyBucks leaderboard.\n\n***$shop:*** Opens the StuyBucks shop.\n\n***$buy [item]:*** Purchase an item from the shop.\n\n***$bid [amt]:*** Bids a specified amount for the ongoing auction.\n\n***$donate [amt] to [user]:*** Donates a specified amount to a specified user.\n\n**Other**\n\n***$select:*** Randomizes a specified subset of brawlers - *excludes banned brawlers.*\n\n***$ban [brawler]:*** Bans a specified brawler.\n\n***$unban [brawler]:*** Unbans a specified brawler.\n\n***$resetbans:*** Unbans all currently banned brawlers.\n\n***$bans:*** Lists the currently banned brawlers.\n\n***$randommap [mode]:*** Randomizes a map from the specified game mode - *Inputs include 'any' for any mode and 'pl' for power league maps.*\n\n***$choose:*** Randomly selects a brawler for the user to play.")
     await message.channel.send(embed = emh)
   if msg.lower().startswith('$randomizetourney'):
     select_brawlers(8)
@@ -1995,9 +2070,9 @@ async def on_message(message):
     embed.set_image(url = 'https://cdn.discordapp.com/attachments/947292794345652225/961836366243704872/60b65fc8668685c9237a3c67_brawlstars3.jpeg')
     await message.channel.send(embed = embed)
 
+  
+my_secret = os.environ['.env']
 
-client.run(os.environ["DISCORD_TOKEN"])
-#my_secret = os.environ['.env']
 
-#keep_alive()
-
+keep_alive()
+client.run(my_secret)
