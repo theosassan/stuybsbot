@@ -29,8 +29,6 @@ import aiohttp
 import requests
 from cachetools import TTLCache
 
-from ip import ip
-
 from brawlstats.errors import Forbidden, NotFoundError, RateLimitError, ServerError, UnexpectedError
 from brawlstats.models import BattleLog, Brawlers, Club, Constants, Members, Player, Ranking
 from brawlstats.utils import API, bstag, typecasted
@@ -2076,7 +2074,7 @@ async def on_message(message):
 
   
 #my_secret = os.environ['.env']
-ip()
+
 client.run(os.environ["DISCORD_TOKEN"])
 
 #keep_alive()
