@@ -2074,6 +2074,14 @@ async def on_message(message):
 
   
 #my_secret = os.environ['.env']
+import requests
+import os
+
+proxies = {
+  "http": os.environ['QUOTAGUARDSTATIC_URL']
+}
+
+res = requests.get("http://ip.jsontest.com/", proxies=proxies)
 
 client.run(os.environ["DISCORD_TOKEN"])
 
