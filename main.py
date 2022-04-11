@@ -64,7 +64,7 @@ def select_brawlers(number):
 
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
-  ip()
+ 
   #setwordle.start()
   #endlottery.start()
 
@@ -2076,6 +2076,7 @@ async def on_message(message):
 
   
 #my_secret = os.environ['.env']
+ip()
 client.run(os.environ["DISCORD_TOKEN"])
 
 #keep_alive()
