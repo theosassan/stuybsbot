@@ -2084,6 +2084,7 @@ proxies = {
 "https": os.environ['QUOTAGUARDSTATIC_URL']
 }
 
-res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
+#res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
+res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293"
 #keep_alive()
 #client.run(my_secret)
