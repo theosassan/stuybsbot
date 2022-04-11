@@ -65,11 +65,11 @@ async def on_ready():
   res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
   #setwordle.start()
   #endlottery.start()
-res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
+#res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
 
 #START OF API
 class Client:
-    res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
+    #res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
     REQUEST_LOG = '{method} {url} recieved {text} has returned {status}'
 
     def __init__(self, token, session=None, timeout=30, is_async=False, **options):
@@ -2085,6 +2085,6 @@ proxies = {
 }
 
 #res = requests.get("http://us-east-static-08.quotaguard.com/", proxies=proxies)
-res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
+#res = requests.get("http://us-east-static-08.quotaguard.com/", "http://lbzz6x1r4y1xf:yujtw4nnp7bs38xpzmw9lk0atw@us-east-static-08.quotaguard.com:9293")
 #keep_alive()
 #client.run(my_secret)
