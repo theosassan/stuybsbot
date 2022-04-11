@@ -29,6 +29,8 @@ import aiohttp
 import requests
 from cachetools import TTLCache
 
+from ip import ip
+
 from brawlstats.errors import Forbidden, NotFoundError, RateLimitError, ServerError, UnexpectedError
 from brawlstats.models import BattleLog, Brawlers, Club, Constants, Members, Player, Ranking
 from brawlstats.utils import API, bstag, typecasted
@@ -62,6 +64,7 @@ def select_brawlers(number):
 
 async def on_ready():
   await client.change_presence(status = discord.Status.online, activity=discord.Game('$help'))
+  ip()
   #setwordle.start()
   #endlottery.start()
 
