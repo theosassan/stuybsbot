@@ -317,10 +317,10 @@ async def on_message(message):
   if msg.startswith('$test'):
     with open("test.json", 'r') as f:
       test = json.load(f)
-    test['test'] += 1
+    test["test"] += 1
     with open('save.json', 'w') as f:
       json.dump(users, f)
-    print(test)
+    await message.channel.send(test)
   with open("save.json", 'r') as f:
       users = json.load(f)
   if msg.startswith('$bregister '):
