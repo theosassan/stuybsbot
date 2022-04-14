@@ -318,8 +318,8 @@ async def on_message(message):
     with open("test.json", 'r') as f:
       test = json.load(f)
     test["test"] += 1
-    with open('save.json', 'w') as f:
-      json.dump(users, f)
+    with open('test.json', 'w') as f:
+      json.dump(test, f)
     await message.channel.send(test)
   with open("save.json", 'r') as f:
       users = json.load(f)
